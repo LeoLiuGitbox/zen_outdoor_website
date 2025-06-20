@@ -1,0 +1,122 @@
+:root {
+    --primary-color: #9caf88; /* Soft Sage Green */
+    --secondary-color: #333333; /* Warm Charcoal */
+    --accent-color: #f6f1e9; /* Gentle Cream */
+    --highlight-color: #dcc7a3; /* Bamboo Beige */
+    --text-color: #333333;
+    --background-color: #ffffff;
+}
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5em;
+}
+
+h1 {
+    color: var(--primary-color);
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color); /* Ensure container stands out if body bg changes */
+}
+
+header, footer {
+    background-color: var(--accent-color);
+    padding: 1em;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+.placeholder-link {
+    font-weight: bold;
+    color: var(--secondary-color);
+    /* background-color: var(--highlight-color);
+    padding: 2px 5px;
+    border-radius: 3px; */
+}
+.placeholder-link:hover {
+    color: var(--primary-color);
+}
+
+/* Navigation Styles */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav ul li a {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+nav ul li a:hover,
+nav ul li a.active { /* .active class can be added later with JS or per page for current page indication */
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--secondary-color);
+}
+
+footer p {
+    margin-bottom: 0.5em;
+}
+
+footer a {
+    color: var(--secondary-color);
+}
+
+footer a:hover {
+    color: var(--primary-color);
+}
