@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Zen Outdoor — Modern Zen Minimalist */
+    --background: 40 33% 97%;        /* cream-50 */
+    --foreground: 0 0% 20%;          /* charcoal-900 */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
+
+    /* Primary = Sage Green */
+    --primary: 97 17% 61%;           /* sage-400 #9caf88 */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary = Charcoal */
+    --secondary: 0 0% 20%;           /* charcoal-900 #333333 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 40 20% 94%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 38 48% 93%;            /* cream-100 #f6f1e9 */
+    --accent-foreground: 0 0% 20%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 97 17% 61%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 40 33% 95%;
+    --card: 0 0% 12%;
+    --card-foreground: 40 33% 95%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 40 33% 95%;
+    --primary: 97 17% 61%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 40 33% 90%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 0 0% 18%;
+    --accent-foreground: 40 33% 95%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 97 17% 61%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  /* Container helper */
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .section-sm {
+    @apply py-10 md:py-16;
+  }
+
+  /* Typography */
+  .heading-xl {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+  }
+
+  .heading-lg {
+    @apply font-display text-3xl md:text-4xl font-bold leading-tight;
+  }
+
+  .heading-md {
+    @apply font-display text-2xl md:text-3xl font-semibold leading-snug;
+  }
+
+  .heading-sm {
+    @apply font-display text-xl md:text-2xl font-semibold;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md
+           bg-sage-400 text-white font-medium text-sm
+           hover:bg-sage-500 active:bg-sage-600
+           transition-colors duration-200 focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-sage-400 focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md
+           border border-charcoal-900 text-charcoal-900 font-medium text-sm
+           hover:bg-charcoal-900 hover:text-white
+           transition-colors duration-200 focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-charcoal-900 focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md
+           border border-sage-400 text-sage-500 font-medium text-sm
+           hover:bg-sage-400 hover:text-white
+           transition-colors duration-200 focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-sage-400 focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Cards */
+  .card-base {
+    @apply bg-white rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  /* Form inputs */
+  .input-base {
+    @apply w-full rounded-md border border-input bg-white px-3 py-2 text-sm
+           placeholder:text-muted-foreground
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-sage {
+    @apply badge bg-sage-100 text-sage-700;
+  }
+
+  .badge-bamboo {
+    @apply badge bg-bamboo-100 text-bamboo-700;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-sage-300 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-sage-400;
+}
