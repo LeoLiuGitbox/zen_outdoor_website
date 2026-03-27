@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
@@ -82,12 +81,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -142,7 +141,7 @@ model CustomerProfile {
   abn             String?
   isTradeAccount  Boolean  @default(false)
   loyaltyPoints   Int      @default(0)
-  notes           String?  @db.Text
+  notes           String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -190,52 +189,52 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  description String?  @db.Text
-  shortDesc   String?
-  categoryId  String
-  basePrice   Decimal  @db.Decimal(10, 2)
-  comparePrice Decimal? @db.Decimal(10, 2)
-  sku         String?  @unique
-  isActive    Boolean  @default(true)
-  isFeatured  Boolean  @default(false)
-  tags        String[]
-  images      String[]
-  metaTitle   String?
-  metaDesc    String?
-  metaImage   String?
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  shortDesc    String?
+  categoryId   String
+  basePrice    Float
+  comparePrice Float?
+  sku          String?  @unique
+  isActive     Boolean  @default(true)
+  isFeatured   Boolean  @default(false)
+  tags         String   @default("[]")
+  images       String   @default("[]")
+  metaTitle    String?
+  metaDesc     String?
+  metaImage    String?
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  category      Category         @relation(fields: [categoryId], references: [id])
-  variants      ProductVariant[]
-  orderItems    OrderItem[]
-  reviews       Review[]
-  wishlistItems WishlistItem[]
+  category       Category             @relation(fields: [categoryId], references: [id])
+  variants       ProductVariant[]
+  orderItems     OrderItem[]
+  reviews        Review[]
+  wishlistItems  WishlistItem[]
   quotationItems QuotationItem[]
-  cartItems     CartItem[]
-  galleryLinks  GalleryProductLink[]
+  cartItems      CartItem[]
+  galleryLinks   GalleryProductLink[]
 }
 
 model ProductVariant {
-  id             String   @id @default(cuid())
-  productId      String
-  name           String
-  sku            String?  @unique
-  color          String?
-  material       String?
-  size           String?
-  priceAdjustment Decimal @db.Decimal(10, 2) @default(0)
-  stock          Int      @default(0)
-  images         String[]
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id              String   @id @default(cuid())
+  productId       String
+  name            String
+  sku             String?  @unique
+  color           String?
+  material        String?
+  size            String?
+  priceAdjustment Float    @default(0)
+  stock           Int      @default(0)
+  images          String   @default("[]")
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  product        Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
   orderItems     OrderItem[]
   cartItems      CartItem[]
   inventory      Inventory?
@@ -243,14 +242,14 @@ model ProductVariant {
 }
 
 model Inventory {
-  id                String   @id @default(cuid())
-  variantId         String   @unique
-  quantity          Int      @default(0)
-  reservedQuantity  Int      @default(0)
-  lowStockThreshold Int      @default(5)
+  id                String    @id @default(cuid())
+  variantId         String    @unique
+  quantity          Int       @default(0)
+  reservedQuantity  Int       @default(0)
+  lowStockThreshold Int       @default(5)
   location          String?
   lastRestockedAt   DateTime?
-  updatedAt         DateTime @updatedAt
+  updatedAt         DateTime  @updatedAt
 
   variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
   logs    InventoryLog[]
@@ -296,28 +295,28 @@ model CartItem {
 // ─── Orders ───────────────────────────────────────────────────────────────────
 
 model Order {
-  id                String        @id @default(cuid())
-  orderNumber       String        @unique
+  id                String         @id @default(cuid())
+  orderNumber       String         @unique
   userId            String?
   guestEmail        String?
-  status            OrderStatus   @default(PENDING)
-  paymentStatus     PaymentStatus @default(PENDING)
+  status            OrderStatus    @default(PENDING)
+  paymentStatus     PaymentStatus  @default(PENDING)
   paymentMethod     PaymentMethod?
   paymentIntentId   String?
-  subtotal          Decimal       @db.Decimal(10, 2)
-  discountAmount    Decimal       @db.Decimal(10, 2) @default(0)
-  shippingAmount    Decimal       @db.Decimal(10, 2) @default(0)
-  taxAmount         Decimal       @db.Decimal(10, 2) @default(0)
-  totalAmount       Decimal       @db.Decimal(10, 2)
+  subtotal          Float
+  discountAmount    Float          @default(0)
+  shippingAmount    Float          @default(0)
+  taxAmount         Float          @default(0)
+  totalAmount       Float
   shippingAddressId String?
-  notes             String?       @db.Text
+  notes             String?
   promotionId       String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 
-  user            User?           @relation(fields: [userId], references: [id])
-  shippingAddress Address?        @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
-  promotion       Promotion?      @relation(fields: [promotionId], references: [id])
+  user            User?            @relation(fields: [userId], references: [id])
+  shippingAddress Address?         @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  promotion       Promotion?       @relation(fields: [promotionId], references: [id])
   items           OrderItem[]
   statusHistory   OrderStatusLog[]
 }
@@ -328,9 +327,9 @@ model OrderItem {
   productId String
   variantId String?
   quantity  Int
-  unitPrice Decimal  @db.Decimal(10, 2)
-  total     Decimal  @db.Decimal(10, 2)
-  snapshot  Json
+  unitPrice Float
+  total     Float
+  snapshot  String
 
   order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product         @relation(fields: [productId], references: [id])
@@ -350,19 +349,19 @@ model OrderStatusLog {
 // ─── Promotions ───────────────────────────────────────────────────────────────
 
 model Promotion {
-  id             String       @id @default(cuid())
-  code           String       @unique
-  description    String?
-  discountType   DiscountType
-  discountValue  Decimal      @db.Decimal(10, 2)
-  minOrderValue  Decimal?     @db.Decimal(10, 2)
-  maxUses        Int?
-  usedCount      Int          @default(0)
-  startsAt       DateTime     @default(now())
-  expiresAt      DateTime?
-  isActive       Boolean      @default(true)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id            String       @id @default(cuid())
+  code          String       @unique
+  description   String?
+  discountType  DiscountType
+  discountValue Float
+  minOrderValue Float?
+  maxUses       Int?
+  usedCount     Int          @default(0)
+  startsAt      DateTime     @default(now())
+  expiresAt     DateTime?
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   orders Order[]
 }
@@ -370,21 +369,21 @@ model Promotion {
 // ─── Quotations ───────────────────────────────────────────────────────────────
 
 model Quotation {
-  id              String          @id @default(cuid())
-  quoteNumber     String          @unique
-  userId          String?
-  guestEmail      String?
-  guestName       String?
-  guestPhone      String?
-  company         String?
+  id               String          @id @default(cuid())
+  quoteNumber      String          @unique
+  userId           String?
+  guestEmail       String?
+  guestName        String?
+  guestPhone       String?
+  company          String?
   deliveryPostcode String?
-  status          QuotationStatus @default(PENDING)
-  adminNotes      String?         @db.Text
-  customerNotes   String?         @db.Text
-  totalEstimate   Decimal?        @db.Decimal(10, 2)
-  validUntil      DateTime?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  status           QuotationStatus @default(PENDING)
+  adminNotes       String?
+  customerNotes    String?
+  totalEstimate    Float?
+  validUntil       DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
   user  User?           @relation(fields: [userId], references: [id])
   items QuotationItem[]
@@ -396,7 +395,7 @@ model QuotationItem {
   productId   String
   variantId   String?
   quantity    Int
-  unitPrice   Decimal? @db.Decimal(10, 2)
+  unitPrice   Float?
   notes       String?
 
   quotation Quotation       @relation(fields: [quotationId], references: [id], onDelete: Cascade)
@@ -407,20 +406,20 @@ model QuotationItem {
 // ─── Bookings ─────────────────────────────────────────────────────────────────
 
 model Booking {
-  id          String        @id @default(cuid())
-  userId      String?
-  guestName   String?
-  guestEmail  String?
-  guestPhone  String?
-  type        BookingType
-  status      BookingStatus @default(PENDING)
-  date        DateTime
-  duration    Int           @default(60)
-  postcode    String?
-  notes       String?       @db.Text
-  adminNotes  String?       @db.Text
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id         String        @id @default(cuid())
+  userId     String?
+  guestName  String?
+  guestEmail String?
+  guestPhone String?
+  type       BookingType
+  status     BookingStatus @default(PENDING)
+  date       DateTime
+  duration   Int           @default(60)
+  postcode   String?
+  notes      String?
+  adminNotes String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
 
   user User? @relation(fields: [userId], references: [id])
 }
@@ -435,15 +434,15 @@ model BlockedDate {
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 
 model Review {
-  id        String   @id @default(cuid())
-  productId String
-  userId    String
-  rating    Int
-  title     String?
-  body      String   @db.Text
-  isApproved Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  productId  String
+  userId     String
+  rating     Int
+  title      String?
+  body       String
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -470,14 +469,14 @@ model BlogPost {
   title       String
   slug        String     @unique
   excerpt     String?
-  body        String     @db.Text
+  body        String
   coverImage  String?
   authorId    String?
   authorName  String?
   status      PostStatus @default(DRAFT)
   publishedAt DateTime?
   scheduledAt DateTime?
-  tags        String[]
+  tags        String     @default("[]")
   metaTitle   String?
   metaDesc    String?
   viewCount   Int        @default(0)
@@ -490,10 +489,10 @@ model BlogPost {
 model GalleryProject {
   id           String   @id @default(cuid())
   title        String
-  description  String?  @db.Text
+  description  String?
   location     String?
-  beforeImages String[]
-  afterImages  String[]
+  beforeImages String   @default("[]")
+  afterImages  String   @default("[]")
   isPublished  Boolean  @default(false)
   sortOrder    Int      @default(0)
   createdAt    DateTime @default(now())
@@ -520,7 +519,7 @@ model Testimonial {
   name        String
   location    String?
   rating      Int      @default(5)
-  body        String   @db.Text
+  body        String
   image       String?
   isApproved  Boolean  @default(false)
   isFeatured  Boolean  @default(false)
@@ -536,14 +535,14 @@ model ContactMessage {
   email     String
   phone     String?
   subject   String
-  body      String   @db.Text
+  body      String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 
 model NewsletterSubscriber {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  isActive    Boolean  @default(true)
+  id           String   @id @default(cuid())
+  email        String   @unique
+  isActive     Boolean  @default(true)
   subscribedAt DateTime @default(now())
 }
