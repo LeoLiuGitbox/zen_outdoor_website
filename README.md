@@ -1,43 +1,146 @@
-# zen_outdoor_website
-Information of Zen Outdoor Living Website
+# Zen Outdoor AU — Website
 
-### 1. Introduction of Zen Outdoor
+Premium outdoor living solutions for Australian homes. This repository contains the full Next.js 14 website and admin portal for Zen Outdoor AU.
 
-Welcome to **Zen Outdoor Living**, your trusted partner for transforming outdoor spaces into stunning, comfortable, and enjoyable environments. Specializing in premium composite decking, elegant wall cladding, durable synthetic turf, stylish pergolas, and practical outdoor roller blinds, we offer a comprehensive, one-stop solution tailored precisely to your outdoor living needs.
+## Tech Stack
 
-At Zen Outdoor, our focus is on delivering exceptional design ideas, reliable service, and unmatched customer satisfaction. We bring your outdoor living dreams to life.
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Styling | Tailwind CSS |
+| Database | Supabase (PostgreSQL) |
+| ORM | Prisma |
+| Auth | NextAuth.js v5 |
+| Payments | Stripe + PayPal + Afterpay/Zip |
+| Storage | Supabase Storage |
+| Email | Resend |
+| Hosting | Vercel |
 
-### 2. Essence of Zen Outdoor
+## Getting Started
 
-At Zen Outdoor, our customers are at the heart of everything we do. We provide personalized, thoughtful, and integrated solutions that simplify your journey from initial inspiration through to final installation. Our expert team serves as your dedicated design partner, idea innovator, and trusted installer, ensuring every outdoor space is uniquely suited to your lifestyle and taste.
+### Prerequisites
 
----
+- Node.js 18+
+- A [Supabase](https://supabase.com) project
+- A [Stripe](https://stripe.com) account
+- A [Resend](https://resend.com) account
 
-### 3. Presentation of Services and Products
+### Installation
 
-- **Visual Showcase:** High-quality, interactive galleries demonstrating real-life product applications.
-- **Virtual Consultation:** Easy online booking for personalized design advice.
-- **Detailed Product Pages:** Rich media, clear specifications, and intuitive navigation.
-- **Interactive Customizer Tool:** Allowing customers to visualize their space with selected products.
-- **Client Stories:** Inspiring narratives showing successful transformations and satisfied customers.
+```bash
+# Clone the repository
+git clone https://github.com/LeoLiuGitbox/zen_outdoor_website.git
+cd zen_outdoor_website
 
----
-### 4. website color themes
+# Install dependencies
+npm install
 
-1. Modern Zen Minimalist
-- Primary: Soft Sage Green (#9caf88)
-- Secondary: Warm Charcoal (#333333)
-- Accent: Gentle Cream (#f6f1e9)
-- Highlight: Bamboo Beige (#dcc7a3)
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
 
-2. Elegant Natural Harmony
-- Primary: Pebble Gray (#b4b4b4)
-- Secondary: Deep Forest Green (#556b2f)
-- Accent: Pale Ivory (#fff9f0)
-- Highlight: Earthy Brown (#8c6b48)
+# Generate Prisma client
+npm run db:generate
 
-3. Tranquil Zen Garden
-- Primary: Calm Ocean Blue (#8da9b6)
-- Secondary: Stone White (#f8f4e3)
-- Accent: Soft Moss (#bec5ad)
-- Highlight: Deep Ebony (#2e2e2e)
+# Push schema to database
+npm run db:push
+
+# Start development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the site.
+
+## Project Structure
+
+```
+├── app/
+│   ├── (public)/          # Public-facing pages
+│   │   ├── page.tsx       # Homepage
+│   │   ├── products/      # Product catalogue
+│   │   ├── services/      # Services
+│   │   ├── gallery/       # Project gallery
+│   │   ├── blog/          # Blog
+│   │   ├── about/         # About us
+│   │   ├── contact/       # Contact
+│   │   ├── quotation/     # Quote request form
+│   │   ├── booking/       # Consultation booking
+│   │   └── configurator/  # Product configurator
+│   ├── (admin)/           # Admin portal (role-protected)
+│   │   └── dashboard/     # Admin dashboard
+│   └── api/               # API routes
+├── components/
+│   └── layout/            # Header, Footer
+├── lib/
+│   ├── auth.ts            # NextAuth config
+│   ├── db.ts              # Prisma client
+│   ├── email.ts           # Resend email helpers
+│   ├── stripe.ts          # Stripe client
+│   └── utils.ts           # Utility functions
+└── prisma/
+    └── schema.prisma      # Database schema
+```
+
+## Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db:generate  # Generate Prisma client
+npm run db:push      # Push schema to database
+npm run db:migrate   # Run migrations
+npm run db:studio    # Open Prisma Studio
+```
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in your values:
+
+```
+DATABASE_URL          # Supabase PostgreSQL connection string
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+NEXTAUTH_URL
+NEXTAUTH_SECRET
+STRIPE_SECRET_KEY
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+STRIPE_WEBHOOK_SECRET
+RESEND_API_KEY
+NEXT_PUBLIC_APP_URL
+```
+
+## Design System
+
+Brand colours (Modern Zen Minimalist theme):
+
+| Token | Colour | Hex |
+|---|---|---|
+| Primary | Sage Green | `#9caf88` |
+| Secondary | Charcoal | `#333333` |
+| Accent | Cream | `#f6f1e9` |
+| Highlight | Bamboo Beige | `#dcc7a3` |
+
+## Products
+
+- Composite Decking
+- Wall Cladding
+- Synthetic Turf
+- Pergolas
+- Outdoor Roller Blinds
+
+## Deployment
+
+Deploy to [Vercel](https://vercel.com) with zero configuration:
+
+```bash
+vercel --prod
+```
+
+Set all environment variables in your Vercel project settings before deploying.
+
+## License
+
+Private — © Zen Outdoor AU Pty Ltd. All rights reserved.
